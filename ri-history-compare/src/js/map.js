@@ -12,16 +12,31 @@ function swapLayer() {
     sideBySide.setRightLayers(rightLayer);
 }
 
+// function to add dropdown selectors
+function addDropdown(dropDownElement, valuesList, key, value, defaultValue) {
+    for (i = 0; i < valuesList.length; i++) {
+        var element = valuesList[i];
+        var appendOption = document.createElement('option');
+
+        if (i === defaultValue) {
+            appendOption.selected = "selected";
+        }
+
+        appendOption.innerHTML = element[key];
+        appendOption.value = element[value];
+        dropDownElement.appendChild(appendOption);
+    }
+}
+
 // function for moving map to suggested locations
 function quickLocation() {
-    var loc = document.getElementById("quick-location").value.split(',');   
+    var loc = document.getElementById('quick-location').value.split(',');
     map.setView([loc[0], loc[1]], loc[2]);
-    console.log(map.getZoom())
 }
 
 // function to get user location
 function userLocation() {
-    map.locate({setView: true, maxZoom: 15});
+    map.locate({ setView: true, maxZoom: 16 });
 }
 
 // setup map bounds, options and base
@@ -38,7 +53,7 @@ var map = L.map('map', mapOptions)
     .setView([41.725024, -71.429290], 15)
     .setMaxBounds(bounds);
 
-L.control.attribution({position: 'bottomleft'}).addTo(map);
+L.control.attribution({ position: 'bottomleft' }).addTo(map);
 
 // default layers and set up side by side map
 var rightLayer = L.esri.tiledMapLayer({
@@ -53,36 +68,43 @@ var leftLayer = L.tileLayer.wms('https://maps.edc.uri.edu/rigis/services/IMG/RI_
 sideBySide = L.control.sideBySide(leftLayer, rightLayer).addTo(map);
 
 // add top right controls
-var select = L.control({position: "topright"});
+var select = L.control({ position: "topright" });
 select.onAdd = function (map) {
     var div = L.DomUtil.create("div", "legend");
+    div.setAttribute("id", "filterSelection");
     div.innerHTML += "<h4>Select Year</h4>";
-    div.innerHTML += '<select id="image-year" name="image-year" onchange="swapLayer()"></select>';
-    div.innerHTML += "<h4>Quick Location</h4>";
-    div.innerHTML += '<select id="quick-location" name="quick-location" onchange="quickLocation()"></select>';
-    div.innerHTML += "<h4>Your Location</h4>";
+    div.innerHTML += '<select id="image-year" class="select-box" name="image-year" onchange="swapLayer()"></select>';
+    div.innerHTML += "<h4 style='padding-top: 0.5rem;'>Quick Location</h4>";
+    div.innerHTML += '<select id="quick-location" class="select-box" name="quick-location" onchange="quickLocation()"></select>';
+    div.innerHTML += "<hr></hr>";
     div.innerHTML += '<button type="button" onclick="userLocation()">Your Location</button>';
+    div.innerHTML += '<button id="exit" type="button" onclick="exitMenu()" style="display: none">Close Menu</button>';
     return div;
 };
 select.addTo(map);
 
-var layerDropdown = document.getElementById('image-year');
-for (i = 0; i < layerSelection.length; i++) {
-    var element = layerSelection[i];
+var locationDropdown = document.getElementById('quick-location');
+addDropdown(locationDropdown, locationList, 'name', 'location', 0);
 
-    var htmlToAppend = document.createElement('option');
-    htmlToAppend.innerHTML = element.year;
-    htmlToAppend.value = element.url;
-    layerDropdown.appendChild(htmlToAppend);
+var layerDropdown = document.getElementById('image-year');
+addDropdown(layerDropdown, layerList, 'year', 'url', 1);
+
+// function for toggle button
+function toggleSelection() {
+    var selection = document.getElementById("filterSelection");
+    var button = document.getElementById("filtersMobile");
+    var exit = document.getElementById("exit");
+    selection.style.display = 'block';
+    exit.style.display = 'block';
+    button.style.display = 'none';
 }
 
-var locationDropdown = document.getElementById('quick-location');
-for (i = 0; i < locationList.length; i++) {
-    var element = locationList[i];
-    console.log(element)
-
-    var htmlToAppend = document.createElement('option');
-    htmlToAppend.innerHTML = element.name;
-    htmlToAppend.value = element.location;
-    locationDropdown.appendChild(htmlToAppend);
+// function for toggle button
+function exitMenu() {
+    var selection = document.getElementById("filterSelection");
+    var button = document.getElementById("filtersMobile");
+    var exit = document.getElementById("exit");
+    selection.style.display = 'none';
+    exit.style.display = 'none';
+    button.style.display = 'block';
 }
