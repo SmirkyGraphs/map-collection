@@ -1,4 +1,4 @@
-const layerSelection = [
+const layerList = [
     {
         "year": "1952",
         "url": "https://tiles.arcgis.com/tiles/S8zZg9pg23JUEexQ/arcgis/rest/services/atlas_img_1951_1952/MapServer"
