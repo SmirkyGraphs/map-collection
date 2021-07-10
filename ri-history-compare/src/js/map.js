@@ -4,7 +4,7 @@ function swapLayer() {
 
     var newLayer = L.esri.tiledMapLayer({
         url: document.getElementById("image-year").value,
-        attribution: 'Tiles provided by: <a href="https://www.rigis.org/">RIGIS</a>'
+        attribution: 'Tiles: <a href="https://www.rigis.org/">RIGIS</a>'
     })
 
     rightLayer = newLayer
@@ -78,6 +78,7 @@ select.onAdd = function (map) {
     div.innerHTML += '<select id="quick-location" class="select-box" name="quick-location" onchange="quickLocation()"></select>';
     div.innerHTML += "<hr></hr>";
     div.innerHTML += '<button type="button" onclick="userLocation()">Your Location</button>';
+    div.innerHTML += '<button id="shareBtn" type="button" onclick="shareMap()">Share Location</button>';
     div.innerHTML += '<button id="exit" type="button" onclick="exitMenu()" style="display: none">Close Menu</button>';
     return div;
 };
@@ -99,7 +100,7 @@ function toggleSelection() {
     button.style.display = 'none';
 }
 
-// function for toggle button
+// function for exiting menu
 function exitMenu() {
     var selection = document.getElementById("filterSelection");
     var button = document.getElementById("filtersMobile");
@@ -108,3 +109,62 @@ function exitMenu() {
     exit.style.display = 'none';
     button.style.display = 'block';
 }
+
+// javascript to share locations
+function getLocation() {
+    const base_url = window.location.href.split('?')[0]
+    var layer = document.getElementById("image-year").selectedIndex
+
+    var zoom = map.getZoom()
+    var center = map.getCenter()
+    var lat = center.lat
+    var lng = center.lng
+
+    return base_url + "?share=" + lat + "," + lng + "," + zoom + "&layer=" + layer
+}
+
+function shareMap() {
+    // modal javascript
+    var modal = document.getElementById("shareModal");
+    var span = document.getElementsByClassName("close")[0];
+    var share = document.getElementById("shareMap");
+    var location = getLocation();
+
+    share.value = location; 
+    modal.style.display = "block";
+    
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+    
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+}
+
+// change map to share location if found
+const urlParams = new URLSearchParams(window.location.search);
+
+if (urlParams.has('share')) {
+    var shareLink = urlParams.get('share').split(',').map(Number);
+        console.log(shareLink)
+        map.setView([shareLink[0], shareLink[1]], shareLink[2]);
+
+    var layerLink = urlParams.get('layer');
+    document.getElementById("image-year").selectedIndex = layerLink;
+    swapLayer();
+}
+
+// copy input to clipboard
+function copyLink() {
+    /* Get the text field */
+    var input = document.getElementById("shareMap");
+
+    input.select();
+    input.setSelectionRange(0, 99999); 
+    document.execCommand("copy");
+  
+    alert("Copied the text: " + copyText.value);
+  }
