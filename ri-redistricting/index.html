@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Compare RI Redistricting Plans</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="./src/css/style.css" />
+</head>
+
+<body>
+    <!-- The Modal -->
+    <div id="shareModal" class="modal">
+        <div class="container">
+            <div class="modal-content">
+                <div class="container">
+                    <button class="close" data-dismiss="modal">✖</button>
+                    <h1 class="modal-title">Thanks for Sharing!</h1>
+                </div>
+                <p>The link below will allow you to share the current map view, zoom level and selected layer. 
+                   Keep in mind, the shared link view is determined by the center of your map which 
+                   may cause issues with different screen sizes.
+                </p>
+                <input type="text" value="" id="shareMap" readonly>
+                <button id="copyLink" type="button" onclick="copyLink()">Copy Link</button>
+            </div>
+        </div>
+    </div>
+    <div class="leaflet-top leaflet-left title-background">
+        <div class="title-box">
+            <div class="map-title">RI Redistricting Plans</div>
+        </div>
+    </div>
+    <div id="filtersMobile">
+        <button class="toggle-btn" onclick="toggleSelection()"></button>
+    </div>
+    <div id="attribution">
+        <p class="attribution-text">Designed by: <a href="https://twitter.com/SmirkyGraphs">SmirkyGraphs</a>
+            | Site: <a href="https://ivizri.com">ivizri.com</a>
+            | Code: <a href="https://github.com/SmirkyGraphs">GitHub</a>
+        </p>
+    </div>
+    <div id="map"></div>
+    <script type="text/javascript" src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script type="text/javascript" src="./src/js/leaflet-side-by-side.min.js"></script>
+
+    <script type="text/javascript" src="./src/js/map.js"></script>
+</body>
+
+</html>
