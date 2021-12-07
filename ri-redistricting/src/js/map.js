@@ -1,6 +1,7 @@
 var alreadyExists = false;
 var chamber = 'house'
 var dist = '01'
+var currentLayer = false
 
 // setup map bounds, options and base
 var southWest = L.latLng(40.718709, -72.887665),
@@ -18,6 +19,9 @@ var map = L.map('map', mapOptions)
 
 map.createPane('left')
 map.createPane('right');
+
+map.createPane('top');
+map.getPane('top').style.zIndex = 1000;
 
 L.control.attribution({ position: 'bottomleft' }).addTo(map);
 
@@ -56,6 +60,19 @@ function planBStyle(feature) {
     };
 }
 
+// plan B styling
+function currentStyle(feature) {
+    return {
+        fillColor: '#ffffff',
+        weight: 3,
+        opacity: 1,
+        pane: 'top',
+        color: '#DC3220',
+        dashArray: '5',
+        fillOpacity: 0
+    };
+}
+
 // function to add dropdown selectors
 function addDropdown(dropDownElement, valuesList, defaultValue) {
     for (i = 0; i < valuesList.length; i++) {
@@ -89,21 +106,23 @@ function swapLayer(pos, layerName, geo) {
 }
 
 async function fetchGeoJSON(chamber, dist) {
-    const [waitA, waitB] = await Promise.all([
+    const [waitA, waitB, waitC] = await Promise.all([
       fetch('http://127.0.0.1:8000/data/' + chamber + '/plan_a/' + dist + '.geojson'),
       fetch('http://127.0.0.1:8000/data/' + chamber + '/plan_b/' + dist + '.geojson'),
+      fetch('http://127.0.0.1:8000/data/' + chamber + '/current/' + dist + '.geojson'),
     ]);
     const planA = await waitA.json();
     const planB = await waitB.json();
-    return [planA, planB];
+    const current = await waitC.json();
+    return [planA, planB, current];
 }
 
 function updateMap(chamber, dist) {
     fetchGeoJSON(chamber, dist).then((data) => {
-        console.log(chamber, dist)
         if (alreadyExists === false) {     
             leftLayer = L.geoJSON(data[0], {id: 'left', pane: 'left', style: planAStyle}).addTo(map);
             rightLayer = L.geoJSON(data[1], {id: 'right', pane: 'right', style: planBStyle}).addTo(map);
+            currentLayer = L.geoJSON(data[2], {style: currentStyle, pane: 'top'})
 
             sideBySide = L.control.sideBySide(leftLayer, rightLayer).addTo(map);
             map.fitBounds(leftLayer.getBounds().extend(rightLayer.getBounds()))
@@ -112,6 +131,7 @@ function updateMap(chamber, dist) {
         } else {
             newLeft = L.geoJSON(data[0], {id: 'left', pane: 'left', style: planAStyle})
             newRight = L.geoJSON(data[1], {id: 'right', pane: 'right', style: planBStyle})
+            currentLayer = L.geoJSON(data[2], {style: currentStyle})
 
             map.removeLayer(leftLayer);
             map.removeLayer(rightLayer);
@@ -132,9 +152,22 @@ function updateMap(chamber, dist) {
 
 // function to swap in/out layers when new dist selected
 function changeDist() {
+    if (map.hasLayer(currentLayer)) {
+        map.removeLayer(currentLayer)
+    }
+
     chamber = document.getElementById('chamber-select').value
     dist = document.getElementById('dist-select').value
+
     updateMap(chamber, dist)
+}
+
+function showCurrent() {
+    if (map.hasLayer(currentLayer)) {
+        map.removeLayer(currentLayer)
+    } else {
+        map.addLayer(currentLayer, true)
+    }
 }
 
 // add top right controls
@@ -150,7 +183,8 @@ select.onAdd = function (map) {
     div.innerHTML += "<h4 style='color: #FFC20A'>L: Plan A</h4>";
     div.innerHTML += "<h4 style='color: #0C7BDC'>R: Plan B</h4>";
     div.innerHTML += "<hr></hr>";
-    div.innerHTML += '<button id="shareBtn" type="button" onclick="shareMap()">Share Location</button>';
+    div.innerHTML += '<button id="currentBtn" type="button" onclick="showCurrent()">Show Current</button>';
+    div.innerHTML += '<button id="shareBtn" type="button" onclick="shareMap()" disabled>Share Location</button>';
     div.innerHTML += '<button id="exit" type="button" onclick="exitMenu()" style="display: none">Close Menu</button>';
     return div;
 };
@@ -167,6 +201,10 @@ var distDropdown = document.getElementById('dist-select');
 addDropdown(distDropdown, districts, 'district', 'url', 1);
 
 function numOfDist() {
+    if (map.hasLayer(currentLayer)) {
+        map.removeLayer(currentLayer)
+    }
+
     document.querySelectorAll('#dist-select option').forEach(option => option.remove())
     if (chamberDropdown.value === 'house') {
         districts = Array.from({length: 75}, (x, i) => String(i + 1).padStart(2, '0'));
@@ -240,7 +278,7 @@ if (urlParams.has('share')) {
 
     chamberDropdown.value = chamberLink;
     distDropdown.value = distLink
-
+    
     numOfDist()
     updateMap(chamberLink, distLink)
 } else {
@@ -256,6 +294,4 @@ function copyLink() {
     input.select();
     input.setSelectionRange(0, 99999); 
     navigator.clipboard.writeText(input.value)
-  
-    alert("Copied the text: " + copyText.value);
   }
