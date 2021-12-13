@@ -78,6 +78,7 @@ html, body, #map {
 }
 
 .select-box {
+  text-transform: capitalize;
   position: relative;
   display: block;
   width: 100%;
@@ -273,6 +274,11 @@ p {
   }
 }
 
+.options {
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
 @media only screen and (max-width: 800px) {
   .title-background {
     display: none;
@@ -280,4 +286,29 @@ p {
   #attribution {
     display: none;
   }
+}
+
+.select-options {
+  width: 100%;
+  margin: 0 auto;
+  display: grid;
+  grid-gap: 1rem;
+}
+
+.col {
+  color: #333333;
+  padding: 1rem;
+}
+
+@media (min-width: 600px) {
+  .select-options { grid-template-columns: repeat(2, 1fr); }
+}
+
+#selectPlansBtn {
+  margin-top: 0.5em;
+}
+
+#left-legend, 
+#right-legend {
+  text-transform: capitalize;
 }
