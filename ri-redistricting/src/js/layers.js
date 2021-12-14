@@ -6,6 +6,7 @@ var senateLayers = [
 
 var houseLayers = [
     'plan_a',
-    'plan_b'
+    'plan_b',
+    'plan_c'
 ]
 
