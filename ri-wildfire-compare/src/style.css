@@ -1,0 +1,164 @@
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+#map {
+  width: 100vw;
+  height: 100vh;
+}
+
+.position-right {
+  right: 0
+}
+
+.position-top {
+  top: 0;
+  position: absolute;
+  z-index: 1000;
+}
+
+.legend {
+  padding: 6px 8px;
+  font: 14px Arial, Helvetica, sans-serif;
+  background: rgba(255, 255, 255, 0.95);
+  line-height: 24px;
+  color: #555;
+}
+
+#controls {
+  position: absolute;
+  margin-right: 10px;
+  margin-top: 10px;
+}
+
+.legend h4 {
+  text-align: center;
+  font-size: 16px;
+  margin: 2px 12px 8px;
+  color: #333333;
+}
+
+.select-box {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 0 auto;
+  font-family: 'Open Sans', 'Helvetica Neue', 'Segoe UI', 'Calibri', 'Arial', sans-serif;
+  font-size: 18px;
+  outline: none;
+  padding-right: 1em;
+}
+
+select {
+  text-transform: capitalize;
+}
+
+hr {
+  height: 1px;
+  background: #333333;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+#fireName {
+  text-transform: capitalize;
+}
+
+#btn {
+  height: 4em;
+  width: 4em;
+  position: absolute;
+  margin-right: 10px;
+  margin-top: 10px;
+  z-index: 10000;
+  top: 0;
+  right: 0;
+  border: none;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+#exit {
+  margin-top: 0.5em;
+  height: 2em;
+  color: white;
+  background-color: #dc3545;
+  width: 50%;
+  border: none;
+  display: inline-block;
+}
+
+.exitContainer {
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 0.5em;
+}
+
+.position-left {
+  left: 0
+}
+
+#title {
+  z-index: 1000;
+  position: absolute;
+  margin-left: 10px;
+  margin-top: 10px;
+  background: rgba(255, 255, 255, 0.95);
+}
+
+#source {
+  z-index: 1000;
+  position: absolute;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.position-bottom {
+  bottom: 0;
+}
+
+.title-text {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+* {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333333;
+}
+
+h1 {
+  font-weight: 600;
+  color: #333333;
+}
+
+@media (max-width:1025px) {
+  .hide-mobile {
+    visibility: hidden !important;
+  }
+}
+
+a {
+  color: blue;
+  text-decoration: none;
+}
+
+#fireDates {
+  text-align: center;
+  padding-bottom: 0px;
+  margin-bottom: 0;
+
+}
+
+#fireAcres {
+  text-align: center;
+  padding-top: 0px;
+  margin-top: 0;
+}

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vite + TS</title>
+</head>
+<body>
+  <div id="map"></div>
+  <button type="button" id="btn" style="visibility:hidden;">
+    <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path clip-rule="evenodd" fill-rule="evenodd" d="M3 6.75A.75.75 0 013.75 6h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 6.75zM3 12a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 12zm0 5.25a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75a.75.75 0 01-.75-.75z"></path>
+    </svg>
+  </button>
+  <div id="title" class="position-top position-left hide-mobile" style="visibility:hidden;">
+    <h1 class="title-text">Rhode Island Wildfire Compare</h1>
+  </div>
+  <div id="controls" class="position-top position-right" style="visibility:hidden;">
+    <div class="legend">
+      <h4>Select a Category</h4>
+      <select id="categorySelect" class="select-box">
+        <option value="california">California</option>
+        <option value="canada">Canada</option>
+      </select>
+      <hr>
+      <h4>Select a Wildfire</h4>
+      <select id="fireSelect" class="select-box"></select>
+      <hr>
+      <h4 id="fireName">{{ fire }} Fire</h4>
+      <p id="fireDates">{{ start_date }} - {{ end_date }}</p>
+      <p id="fireAcres">burned {{ acres_burned }} acres</p>
+      <div class="exitContainer">
+        <button id="exit" type="button">Close Menu</button>
+      </div>
+    </div>
+  </div>
+  <div id="source" class="position-bottom position-right hide-mobile" style="visibility:hidden;">
+    <p class="title-text">
+      <span style="padding-right: 5px;">sources:</span>
+      <a href="https://www.fire.ca.gov/what-we-do/fire-resource-assessment-program/gis-mapping-and-data-analytics" 
+         style="padding-right: 5px;">California
+      </a> |
+      <a href="https://cwfis.cfs.nrcan.gc.ca/downloads/hotspots/" style="padding-left: 5px;">Canada</a>
+    </p>
+  </div>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+
+</html>
