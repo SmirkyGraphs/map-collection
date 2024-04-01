@@ -61,8 +61,8 @@ var rightLayer = L.esri.tiledMapLayer({
     attribution: 'Tiles provided by: <a href="https://www.rigis.org/">RIGIS</a>'
 }).addTo(map);
 
-var leftLayer = L.tileLayer.wms('https://maps.edc.uri.edu/rigis/services/IMG/RI_202004_RGB_3in_web/ImageServer/WMSServer', {
-    layers: '0'
+var leftLayer = L.tileLayer.wms('https://maps.edc.uri.edu/rigis/services/IMG/RI_202211_RGB_3in_web/ImageServer/WMSServer', {
+    layers: 'RI_202211_RGB_3in_web'
 }).addTo(map);
 
 sideBySide = L.control.sideBySide(leftLayer, rightLayer).addTo(map);
